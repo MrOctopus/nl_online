@@ -2,6 +2,8 @@ import sys
 import os
 import shutil
 
+# This file is licensed under the SKSE license (/skse64/LICENSE)
+
 def main():
     if not len(sys.argv) == 4:
         exit(1)
