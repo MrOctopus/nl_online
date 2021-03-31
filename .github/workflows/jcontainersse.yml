@@ -1,0 +1,83 @@
+name: jcontainersse
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python-version: ['3.x']
+    env:
+      build-msvc: 14.1
+      build-config: Release
+      build-arch: x64
+      build-arch-alt: 64
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        path: ./repo
+
+    - name: Pull JContainersSE Repo
+      uses: actions/checkout@v2
+      with:
+        repository: ryobg/JContainers
+        path: ./other
+      
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: ${{ env.build-arch }}
+
+    - name: Check if SKSE64 has been updated
+      run: python ./repo/tools/compare_git_timestamps.py "$(git --git-dir ./other/.git log -1 --format=%cd)" ./repo/${Env:GITHUB_WORKFLOW}/last_commit.txt
+
+    - name: Set up Developer Command Prompt
+      if: success()
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        toolset: ${{ env.build-msvc }}
+        arch: ${{ env.build-arch }}
+
+    - name: Prepare build
+      if: success()
+      run: |
+        cd other
+        git submodule update --init --recursive
+        rm .\tools\build_boost.bat
+        mv ..\repo\tools\build_boost.bat .\tools\
+        .\tools\build_boost.bat vc141
+        .\tools\merge_skse.bat
+
+    - name: Build from source   
+      if: success()
+      run: msbuild .\other\JContainers.sln /p:Configuration=${Env:build-config} /p:Platform=${Env:build-arch}
+
+    - name: Upload source
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: source
+        path: ./other/${{ env.build-arch }}/${{ env.build-config }}/Data/Scripts/source
+    - name: Upload timestamp
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: timestamp
+        path: ./repo/${{ github.workflow }}/last_commit.txt
+
+  update:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Update
+        token: ${{ secrets.PRIVATE_TOKEN }}
+        inputs: '{ "name": "${{ github.workflow }}" }'

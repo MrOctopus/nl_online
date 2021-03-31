@@ -1,0 +1,60 @@
+name: skse64
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.x']
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        path: ./repo
+
+    - name: Pull SKSE64 Repo
+      uses: actions/checkout@v2
+      with:
+        repository: ianpatt/skse64
+        path: ./other
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Check if SKSE64 has been updated
+      run: python ./repo/tools/compare_git_timestamps.py "$(git --git-dir ./other/.git log -1 --format=%cd)" ./repo/$GITHUB_WORKFLOW/last_commit.txt
+      
+    - name: Merge source files 
+      if: success()
+      run: python ./repo/tools/merge_dir_files.py ./other/scripts/vanilla ./other/scripts/modified ./source
+
+    - name: Upload source
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: source
+        path: ./source
+    - name: Upload timestamp
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+        name: timestamp
+        path: ./repo/${{ github.workflow }}/last_commit.txt
+
+  update:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Update
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: Update
+        token: ${{ secrets.PRIVATE_TOKEN }}
+        inputs: '{ "name": "${{ github.workflow }}" }'

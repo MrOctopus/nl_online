@@ -1,0 +1,50 @@
+name: Update
+
+on:
+  workflow_dispatch:
+      inputs:
+        name:
+          description: 'Name of the workflow to fetch artifact from'     
+          required: true
+
+jobs:
+  lock:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prevent parallel workflows
+        uses: softprops/turnstyle@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  commit:
+    needs: lock
+    runs-on: ubuntu-latest
+    env:
+      TO_UPDATE: ${{ github.event.inputs.name }}
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        path: ./repo
+
+    - name: Download latest workflow artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        path: ./latest
+        workflow: "${{ env.TO_UPDATE }}.yml"
+
+    - name: Move latest to repo
+      if: success()
+      run: |
+        mkdir -p ./repo/$TO_UPDATE
+        ls -d $(pwd -P)/repo/$TO_UPDATE/* | grep -v LICENSE | xargs -d '\n' rm -rf
+        mv ./latest/source ./repo/$TO_UPDATE/.
+        mv ./latest/timestamp/*.txt ./repo/$TO_UPDATE/.
+
+    - name: Commit changes
+      if: success()
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        repository: ./repo
+        commit_message: "Updated ${{ env.TO_UPDATE }} source to latest version"
