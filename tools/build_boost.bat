@@ -43,10 +43,9 @@ if not exist b2.exe (
     echo b2 not found, bootstrapping Boost...
 	
 	if [%1]==[] (
-		call bootstrap.bat
-	)
-	else (
-		call bootstrap.bat %1
+        call bootstrap.bat
+	) else (
+	    call bootstrap.bat %1
 	)
 
     if errorlevel 1 (

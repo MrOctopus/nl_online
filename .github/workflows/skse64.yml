@@ -17,7 +17,7 @@ jobs:
       with:
         path: ./repo
 
-    - name: Pull SKSE64 Repo
+    - name: Pull ${{ github.workflow }} Repo
       uses: actions/checkout@v2
       with:
         repository: ianpatt/skse64
@@ -28,7 +28,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Check if SKSE64 has been updated
+    - name: Check if ${{ github.workflow }} has been updated
       run: python ./repo/tools/compare_git_timestamps.py "$(git --git-dir ./other/.git log -1 --format=%cd)" ./repo/$GITHUB_WORKFLOW/last_commit.txt
       
     - name: Merge source files 
