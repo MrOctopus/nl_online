@@ -49,8 +49,6 @@ jobs:
       run: |
         cd other
         git submodule update --init --recursive
-        rm .\tools\build_boost.bat
-        mv ..\repo\tools\build_boost.bat .\tools\
         .\tools\build_boost.bat vc141
         .\tools\merge_skse.bat
 
