@@ -203,12 +203,12 @@ function SetSliderValue(Float a_value)
 	_activeOption = -1
 endFunction
 
-Int function AddSliderOption(String a_text, Float a_value, String a_formatString, Int a_flags)
+Int function AddSliderOption(String a_text, Float a_value, string a_formatString = "{0}", int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_SLIDER, a_text, a_formatString, a_value, a_flags)
 endFunction
 
-function SetOptionFlagsST(Int a_flags, Bool a_noUpdate, String a_stateName)
+function SetOptionFlagsST(int a_flags, bool a_noUpdate = false, string a_stateName = "")
 
 	if _state == self.STATE_RESET
 		self.Error("Cannot set option flags while in OnPageReset(). Pass flags to AddOption instead")
@@ -228,12 +228,12 @@ function OnInputAcceptST(String a_input)
 	; Empty function
 endFunction
 
-Int function AddToggleOption(String a_text, Bool a_checked, Int a_flags)
+Int function AddToggleOption(String a_text, Bool a_checked, Int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_TOGGLE, a_text, none, (a_checked as Int) as Float, a_flags)
 endFunction
 
-function AddSliderOptionST(String a_stateName, String a_text, Float a_value, String a_formatString, Int a_flags)
+function AddSliderOptionST(String a_stateName, String a_text, Float a_value, String a_formatString = "{0}", Int a_flags = 0)
 
 	self.AddOptionST(a_stateName, self.OPTION_TYPE_SLIDER, a_text, a_formatString, a_value, a_flags)
 endFunction
@@ -299,7 +299,7 @@ function OnOptionHighlight(Int a_option)
 	; Empty function
 endFunction
 
-function AddInputOptionST(String a_stateName, String a_text, String a_value, Int a_flags)
+function AddInputOptionST(String a_stateName, String a_text, String a_value, Int a_flags = 0)
 
 	self.AddOptionST(a_stateName, self.OPTION_TYPE_INPUT, a_text, a_value, 0 as Float, a_flags)
 endFunction
@@ -378,7 +378,7 @@ function OnOptionColorOpen(Int a_option)
 	; Empty function
 endFunction
 
-function AddColorOptionST(String a_stateName, String a_text, Int a_color, Int a_flags)
+function AddColorOptionST(String a_stateName, String a_text, Int a_color, int a_flags = 0)
 
 	self.AddOptionST(a_stateName, self.OPTION_TYPE_COLOR, a_text, none, a_color as Float, a_flags)
 endFunction
@@ -429,7 +429,7 @@ function OnSliderAcceptST(Float a_value)
 	; Empty function
 endFunction
 
-function AddToggleOptionST(String a_stateName, String a_text, Bool a_checked, Int a_flags)
+function AddToggleOptionST(String a_stateName, String a_text, Bool a_checked, int a_flags = 0)
 
 	self.AddOptionST(a_stateName, self.OPTION_TYPE_TOGGLE, a_text, none, (a_checked as Int) as Float, a_flags)
 endFunction
@@ -478,7 +478,7 @@ function OnConfigManagerReady(String a_eventName, String a_strArg, Float a_numAr
 	endIf
 endFunction
 
-function SetSliderOptionValue(Int a_option, Float a_value, String a_formatString, Bool a_noUpdate)
+function SetSliderOptionValue(Int a_option, Float a_value, string a_formatString = "{0}", bool a_noUpdate = false)
 
 	Int index = a_option % 256
 	Int type = _optionFlagsBuf[index] % 256
@@ -509,7 +509,7 @@ function SetOptionStrValue(Int a_index, String a_strValue, Bool a_noUpdate)
 	endIf
 endFunction
 
-Int function AddKeyMapOption(String a_text, Int a_keyCode, Int a_flags)
+Int function AddKeyMapOption(string a_text, int a_keyCode, int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_KEYMAP, a_text, none, a_keyCode as Float, a_flags)
 endFunction
@@ -536,7 +536,7 @@ function SetOptionValues(Int a_index, String a_strValue, Float a_numValue, Bool 
 	endIf
 endFunction
 
-function SetTextOptionValueST(String a_value, Bool a_noUpdate, String a_stateName)
+function SetTextOptionValueST(string a_value, bool a_noUpdate = false, string a_stateName = "")
 
 	Int index = self.GetStateOptionIndex(a_stateName)
 	if index < 0
@@ -546,7 +546,7 @@ function SetTextOptionValueST(String a_value, Bool a_noUpdate, String a_stateNam
 	self.SetTextOptionValue(index, a_value, a_noUpdate)
 endFunction
 
-function SetToggleOptionValueST(Bool a_checked, Bool a_noUpdate, String a_stateName)
+function SetToggleOptionValueST(bool a_checked, bool a_noUpdate = false, string a_stateName = "")
 
 	Int index = self.GetStateOptionIndex(a_stateName)
 	if index < 0
@@ -556,7 +556,7 @@ function SetToggleOptionValueST(Bool a_checked, Bool a_noUpdate, String a_stateN
 	self.SetToggleOptionValue(index, a_checked, a_noUpdate)
 endFunction
 
-function AddTextOptionST(String a_stateName, String a_text, String a_value, Int a_flags)
+function AddTextOptionST(String a_stateName, String a_text, String a_value, int a_flags = 0)
 
 	self.AddOptionST(a_stateName, self.OPTION_TYPE_TEXT, a_text, a_value, 0 as Float, a_flags)
 endFunction
@@ -599,7 +599,7 @@ function RequestMenuDialogData(Int a_index)
 	ui.InvokeIntA(self.JOURNAL_MENU, self.MENU_ROOT + ".setMenuDialogParams", _menuParams)
 endFunction
 
-function SetOptionFlags(Int a_option, Int a_flags, Bool a_noUpdate)
+function SetOptionFlags(int a_option, int a_flags, bool a_noUpdate = false)
 
 	if _state == self.STATE_RESET
 		self.Error("Cannot set option flags while in OnPageReset(). Pass flags to AddOption instead")
@@ -663,7 +663,7 @@ function SetPage(String a_page, Int a_index)
 	self.WriteOptionBuffers()
 endFunction
 
-function AddKeyMapOptionST(String a_stateName, String a_text, Int a_keyCode, Int a_flags)
+function AddKeyMapOptionST(String a_stateName, String a_text, Int a_keyCode, int a_flags = 0)
 
 	self.AddOptionST(a_stateName, self.OPTION_TYPE_KEYMAP, a_text, none, a_keyCode as Float, a_flags)
 endFunction
@@ -685,7 +685,7 @@ function SetInfoText(String a_text)
 	_infoText = a_text
 endFunction
 
-Bool function ShowMessage(String a_message, Bool a_withCancel, String a_acceptLabel, String a_cancelLabel)
+Bool function ShowMessage(string a_message, bool a_withCancel = true, string a_acceptLabel = "$Accept", string a_cancelLabel = "$Cancel")
 
 	if _waitForMessage
 		self.Error("Called ShowMessage() while another message was already open")
@@ -750,7 +750,7 @@ function SetMenuDialogOptions(String[] a_options)
 	ui.InvokeStringA(self.JOURNAL_MENU, self.MENU_ROOT + ".setMenuDialogOptions", a_options)
 endFunction
 
-function SetSliderOptionValueST(Float a_value, String a_formatString, Bool a_noUpdate, String a_stateName)
+function SetSliderOptionValueST(float a_value, string a_formatString = "{0}", bool a_noUpdate = false, string a_stateName = "")
 
 	Int index = self.GetStateOptionIndex(a_stateName)
 	if index < 0
@@ -792,7 +792,7 @@ function SetSliderDialogStartValue(Float a_value)
 	_sliderParams[0] = a_value
 endFunction
 
-Int function AddHeaderOption(String a_text, Int a_flags)
+Int function AddHeaderOption(string a_text, int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_HEADER, a_text, none, 0 as Float, a_flags)
 endFunction
@@ -812,7 +812,7 @@ function OnGameReload()
 	self.CheckVersion()
 endFunction
 
-function SetTextOptionValue(Int a_option, String a_value, Bool a_noUpdate)
+function SetTextOptionValue(int a_option, string a_value, bool a_noUpdate = false)
 
 	Int index = a_option % 256
 	Int type = _optionFlagsBuf[index] % 256
@@ -852,7 +852,7 @@ function SetMenuDialogStartIndex(Int a_value)
 	_menuParams[0] = a_value
 endFunction
 
-function SetInputOptionValueST(String a_value, Bool a_noUpdate, String a_stateName)
+function SetInputOptionValueST(String a_value, Bool a_noUpdate = false, String a_stateName = "")
 
 	Int index = self.GetStateOptionIndex(a_stateName)
 	if index < 0
@@ -868,7 +868,7 @@ function OnSliderOpenST()
 	; Empty function
 endFunction
 
-function SetKeyMapOptionValueST(Int a_keyCode, Bool a_noUpdate, String a_stateName)
+function SetKeyMapOptionValueST(int a_keyCode, bool a_noUpdate = false, string a_stateName = "")
 
 	Int index = self.GetStateOptionIndex(a_stateName)
 	if index < 0
@@ -878,7 +878,7 @@ function SetKeyMapOptionValueST(Int a_keyCode, Bool a_noUpdate, String a_stateNa
 	self.SetKeyMapOptionValue(index, a_keyCode, a_noUpdate)
 endFunction
 
-function SetColorOptionValueST(Int a_color, Bool a_noUpdate, String a_stateName)
+function SetColorOptionValueST(int a_color, bool a_noUpdate = false, string a_stateName = "")
 
 	Int index = self.GetStateOptionIndex(a_stateName)
 	if index < 0
@@ -888,7 +888,7 @@ function SetColorOptionValueST(Int a_color, Bool a_noUpdate, String a_stateName)
 	self.SetColorOptionValue(index, a_color, a_noUpdate)
 endFunction
 
-function SetMenuOptionValue(Int a_option, String a_value, Bool a_noUpdate)
+function SetMenuOptionValue(Int a_option, String a_value, Bool a_noUpdate = false)
 
 	Int index = a_option % 256
 	Int type = _optionFlagsBuf[index] % 256
@@ -904,7 +904,7 @@ function SetMenuOptionValue(Int a_option, String a_value, Bool a_noUpdate)
 	self.SetOptionStrValue(index, a_value, a_noUpdate)
 endFunction
 
-function SetMenuOptionValueST(String a_value, Bool a_noUpdate, String a_stateName)
+function SetMenuOptionValueST(String a_value, Bool a_noUpdate = false, String a_stateName = "")
 
 	Int index = self.GetStateOptionIndex(a_stateName)
 	if index < 0
@@ -914,7 +914,7 @@ function SetMenuOptionValueST(String a_value, Bool a_noUpdate, String a_stateNam
 	self.SetMenuOptionValue(index, a_value, a_noUpdate)
 endFunction
 
-Int function AddMenuOption(String a_text, String a_value, Int a_flags)
+Int function AddMenuOption(string a_text, string a_value, int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_MENU, a_text, a_value, 0 as Float, a_flags)
 endFunction
@@ -946,7 +946,7 @@ function OnMenuOpenST()
 	; Empty function
 endFunction
 
-function SetInputOptionValue(Int a_option, String a_value, Bool a_noUpdate)
+function SetInputOptionValue(Int a_option, String a_value, Bool a_noUpdate = false)
 
 	Int index = a_option % 256
 	Int type = _optionFlagsBuf[index] % 256
@@ -968,7 +968,7 @@ function OnKeyMapChangeST(Int a_keyCode, String a_conflictControl, String a_conf
 	; Empty function
 endFunction
 
-function SetKeyMapOptionValue(Int a_option, Int a_keyCode, Bool a_noUpdate)
+function SetKeyMapOptionValue(Int a_option, Int a_keyCode, bool a_noUpdate = false)
 
 	Int index = a_option % 256
 	Int type = _optionFlagsBuf[index] % 256
@@ -984,7 +984,7 @@ function SetKeyMapOptionValue(Int a_option, Int a_keyCode, Bool a_noUpdate)
 	self.SetOptionNumValue(index, a_keyCode as Float, a_noUpdate)
 endFunction
 
-function SetColorOptionValue(Int a_option, Int a_color, Bool a_noUpdate)
+function SetColorOptionValue(Int a_option, Int a_color, bool a_noUpdate = false)
 
 	Int index = a_option % 256
 	Int type = _optionFlagsBuf[index] % 256
@@ -1000,7 +1000,7 @@ function SetColorOptionValue(Int a_option, Int a_color, Bool a_noUpdate)
 	self.SetOptionNumValue(index, a_color as Float, a_noUpdate)
 endFunction
 
-function LoadCustomContent(String a_source, Float a_x, Float a_y)
+function LoadCustomContent(String a_source, float a_x = 0.0, float a_y = 0.0)
 
 	Float[] params = new Float[2]
 	params[0] = a_x
@@ -1009,7 +1009,7 @@ function LoadCustomContent(String a_source, Float a_x, Float a_y)
 	ui.InvokeString(self.JOURNAL_MENU, self.MENU_ROOT + ".loadCustomContent", a_source)
 endFunction
 
-function SetToggleOptionValue(Int a_option, Bool a_checked, Bool a_noUpdate)
+function SetToggleOptionValue(Int a_option, Bool a_checked, bool a_noUpdate = false)
 
 	Int index = a_option % 256
 	Int type = _optionFlagsBuf[index] % 256
@@ -1025,7 +1025,7 @@ function SetToggleOptionValue(Int a_option, Bool a_checked, Bool a_noUpdate)
 	self.SetOptionNumValue(index, (a_checked as Int) as Float, a_noUpdate)
 endFunction
 
-Int function AddInputOption(String a_text, String a_value, Int a_flags)
+Int function AddInputOption(String a_text, String a_value, Int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_INPUT, a_text, a_value, 0 as Float, a_flags)
 endFunction
@@ -1073,7 +1073,7 @@ function ClearOptionBuffers()
 	_cursorFillMode = self.LEFT_TO_RIGHT
 endFunction
 
-Int function AddTextOption(String a_text, String a_value, Int a_flags)
+Int function AddTextOption(string a_text, string a_value, int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_TEXT, a_text, a_value, 0 as Float, a_flags)
 endFunction
@@ -1190,7 +1190,7 @@ function OnMessageDialogClose(String a_eventName, String a_strArg, Float a_numAr
 	_waitForMessage = false
 endFunction
 
-Int function AddColorOption(String a_text, Int a_color, Int a_flags)
+Int function AddColorOption(String a_text, Int a_color, int a_flags = 0)
 
 	return self.AddOption(self.OPTION_TYPE_COLOR, a_text, none, a_color as Float, a_flags)
 endFunction
@@ -1237,7 +1237,7 @@ function OnOptionInputOpen(Int a_option)
 	; Empty function
 endFunction
 
-function AddMenuOptionST(String a_stateName, String a_text, String a_value, Int a_flags)
+function AddMenuOptionST(String a_stateName, String a_text, String a_value, int a_flags = 0)
 
 	self.AddOptionST(a_stateName, self.OPTION_TYPE_MENU, a_text, a_value, 0 as Float, a_flags)
 endFunction
