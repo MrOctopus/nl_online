@@ -1,9 +1,12 @@
 # nl_online
-This repository will always keep the .psc sources for the following libraries up to date:
+This repository functions as a common repository for popular .psc sources, some of which are automatically updated.
 
-## Current Papyrus Libraries
+## Always up-to-date libraries
 * [SKSE64](https://github.com/ianpatt/skse64)
 * [JContainers (64-bit)](https://github.com/ryobg/JContainers)
+
+## Manually updated libraries
+* [SkyUI](https://github.com/schlangster/skyui)
 * SSE Base scripts
 
 ## Purpose
