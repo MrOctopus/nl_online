@@ -12,7 +12,7 @@ Bool function __isInstalled() global native
         bool isJCValid = JContainers.APIVersion() == AV && JContainers.featureVersion() >= FV
     where AV and FV are hardcoded API and feature version numbers.
     Current API version is 4
-    Current feature version is 1
+    Current feature version is 2
 /;
 Int function APIVersion() global native
 Int function featureVersion() global native
@@ -32,6 +32,6 @@ String function userDirectory() global native
 
 ; Returns true if JContainers plugin installed properly
 bool function isInstalled() global
-    return __isInstalled() && 4 == APIVersion() && 1 == featureVersion()
+    return __isInstalled() && 4 == APIVersion() && 2 == featureVersion()
 endfunction
 
